@@ -1,0 +1,29 @@
+dist: bionic
+sudo: required
+language: csharp
+mono: none
+dotnet: 2.2.106
+services:
+- docker
+os:
+- linux
+
+before_install:
+  - dotnet restore src/CryptoBasket.sln
+  - dotnet build -c Release src/CryptoBasket.sln
+
+script:
+  - export PATH="$PATH:/root/.dotnet/tools"
+  - dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools --version 4.0.0-rc8
+  - dotnet test -c Release src/1.Presentation/tests/CryptoBasket.Api.Tests/CryptoBasket.Api.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='results/codesi.api.tests.xml'
+  - dotnet test -c Release src/2.Application/tests/CryptoBasket.Application.Tests/CryptoBasket.Application.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='results/codesi.application.tests.xml'
+  - dotnet test -c Release src/3.Domain/tests/CryptoBasket.Domain.Tests/CryptoBasket.Domain.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='results/codesi.domain.tests.xml'
+  - dotnet test -c Release src/3.Domain/tests/CryptoBasket.Domain.Core.Tests/CryptoBasket.Domain.Core.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='results/codesi.domain.core.tests.xml'
+  - tools/reportgenerator "-reports:results/codesi.api.tests.xml;results/codesi.application.tests.xml;results/codesi.domain.tests.xml;results/codesi.domain.core.tests.xml" "-targetdir:reports/" "-reporttypes:HTML;XML;XMLSummary;TextSummary"
+
+after_success:
+  - docker build -t erickgallani/cryptobasket .
+  # Login to docker CI
+  - echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_LOGIN" --password-stdin
+  # Push images to docker hub
+  - docker push erickgallani/cryptobasket
