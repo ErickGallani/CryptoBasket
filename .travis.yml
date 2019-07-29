@@ -19,9 +19,11 @@ script:
   - dotnet test -c Release src/2.Application/tests/CryptoBasket.Application.Tests/CryptoBasket.Application.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.application.tests.xml'
   - dotnet test -c Release src/3.Domain/tests/CryptoBasket.Domain.Tests/CryptoBasket.Domain.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.domain.tests.xml'
   - dotnet test -c Release src/3.Domain/tests/CryptoBasket.Domain.Core.Tests/CryptoBasket.Domain.Core.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.domain.core.tests.xml'
+  - dotnet test -c Release src/4.Infrastructure/tests/CryptoBasket.CoinMarketCap.Tests/CryptoBasket.CoinMarketCap.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.coinmarketcap.core.tests.xml'
   - tools/reportgenerator "-reports:results/cryptobasket.api.tests.xml;results/cryptobasket.application.tests.xml;results/cryptobasket.domain.tests.xml;results/cryptobasket.domain.core.tests.xml" "-targetdir:reports/" "-reporttypes:HTML;XML;XMLSummary;TextSummary"
   - cat reports/Summary.txt
-  - cat reports/Summary.xml
+  - chmod +x ci_scripts/the_file_name
+  - ./ci_scripts/code_coverage_test.sh
 
 after_success:
   - docker build -t erickgallani/cryptobasket .
@@ -29,3 +31,11 @@ after_success:
   - echo "$DOCKER_HUB_PASS" | docker login -u "$DOCKER_HUB_LOGIN" --password-stdin
   # Push images to docker hub
   - docker push erickgallani/cryptobasket
+  
+deploy:
+  provider: releases
+  api_key: $GITHUB_AUTH_TOKEN
+  file: reports/Summary.xml
+  skip_cleanup: true
+  on:
+    tags: true
