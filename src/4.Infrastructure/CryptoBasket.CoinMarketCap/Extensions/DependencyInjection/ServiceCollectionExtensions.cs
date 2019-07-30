@@ -5,7 +5,9 @@
     using CryptoBasket.CoinMarketCap.Consts;
     using Microsoft.Extensions.DependencyInjection;
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
+    [ExcludeFromCodeCoverage]
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddCryptoClients(this IServiceCollection services)

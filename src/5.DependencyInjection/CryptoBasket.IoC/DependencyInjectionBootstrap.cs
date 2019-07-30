@@ -5,7 +5,9 @@
     using CryptoBasket.ErrorLogger.Extensions.DependencyInjection;
     using CryptoBasket.Repository.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection;
+    using System.Diagnostics.CodeAnalysis;
 
+    [ExcludeFromCodeCoverage]
     public static class DependencyInjectionBootstrap
     {
         public static IServiceCollection Setup(

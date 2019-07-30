@@ -10,17 +10,17 @@ os:
 
 before_install:
   - dotnet restore src/CryptoBasket.sln
-  - dotnet build -c Release src/CryptoBasket.sln
+  - dotnet build src/CryptoBasket.sln
 
 script:
   - export PATH="$PATH:/root/.dotnet/tools"
   - dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools --version 4.0.0-rc8
-  - dotnet test -c Release src/1.Presentation/tests/CryptoBasket.Api.Tests/CryptoBasket.Api.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.api.tests.xml'
-  - dotnet test -c Release src/2.Application/tests/CryptoBasket.Application.Tests/CryptoBasket.Application.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.application.tests.xml'
-  - dotnet test -c Release src/3.Domain/tests/CryptoBasket.Domain.Tests/CryptoBasket.Domain.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.domain.tests.xml'
-  - dotnet test -c Release src/3.Domain/tests/CryptoBasket.Domain.Core.Tests/CryptoBasket.Domain.Core.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.domain.core.tests.xml'
-  - dotnet test -c Release src/4.Infrastructure/tests/CryptoBasket.CoinMarketCap.Tests/CryptoBasket.CoinMarketCap.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.coinmarketcap.tests.xml'
-  - dotnet test -c Release src/4.Infrastructure/tests/CryptoBasket.Repository.Tests/CryptoBasket.Repository.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.repository.tests.xml'
+  - dotnet test src/1.Presentation/tests/CryptoBasket.Api.Tests/CryptoBasket.Api.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.api.tests.xml'
+  - dotnet test src/2.Application/tests/CryptoBasket.Application.Tests/CryptoBasket.Application.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.application.tests.xml'
+  - dotnet test src/3.Domain/tests/CryptoBasket.Domain.Tests/CryptoBasket.Domain.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.domain.tests.xml'
+  - dotnet test src/3.Domain/tests/CryptoBasket.Domain.Core.Tests/CryptoBasket.Domain.Core.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.domain.core.tests.xml'
+  - dotnet test src/4.Infrastructure/tests/CryptoBasket.CoinMarketCap.Tests/CryptoBasket.CoinMarketCap.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.coinmarketcap.tests.xml'
+  - dotnet test src/4.Infrastructure/tests/CryptoBasket.Repository.Tests/CryptoBasket.Repository.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.repository.tests.xml'
   - tools/reportgenerator "-reports:results/cryptobasket.api.tests.xml;results/cryptobasket.application.tests.xml;results/cryptobasket.domain.tests.xml;results/cryptobasket.domain.core.tests.xml;results/cryptobasket.coinmarketcap.tests.xml;results/cryptobasket.repository.tests.xml" "-targetdir:reports/" "-reporttypes:HTML;XML;XMLSummary;TextSummary"
   - cat reports/Summary.txt
   - chmod +x code_coverage_test.sh

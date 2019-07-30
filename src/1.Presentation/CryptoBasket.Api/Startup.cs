@@ -11,8 +11,10 @@
     using Microsoft.IdentityModel.Tokens;
     using Microsoft.OpenApi.Models;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
 
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         private const string LOG_FILE_PATH = "Logs/paymentgateway-{Date}.json";
