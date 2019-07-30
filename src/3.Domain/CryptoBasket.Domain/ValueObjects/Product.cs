@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
     using CryptoBasket.Domain.Core.ValueObjects;
+    using CryptoBasket.Domain.Validators;
+    using FluentValidation;
 
     public class Product : ValueObject<Product>
     {
@@ -30,5 +32,8 @@
             yield return this.Symbol;
             yield return this.Price;
         }
+
+        public override IValidator<Product> GetValidator() =>
+            new ProductValidator();
     }
 }

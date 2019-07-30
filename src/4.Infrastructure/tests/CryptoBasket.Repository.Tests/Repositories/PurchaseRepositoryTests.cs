@@ -50,5 +50,64 @@
                 Assert.Equal(product, purchaseFromDatabase.Product);
             }
         }
+
+        [Fact]
+        public async Task Given_PurchaseId_When_ThePurchaseOnTheDataBase_Then_ReturnsThePurchaseFromDatabase()
+        {
+            // arrange
+            var dbContextOptions = new DbContextOptionsBuilder<CryptoBasketContext>()
+                .UseInMemoryDatabase(databaseName: "GetTestDatabase")
+                .Options;
+
+            var product = new Product(
+                123456,
+                "My Coin",
+                "MCN",
+                245.45D);
+
+            Purchase purchase = new Purchase(product, quantity: 2);
+
+            // act
+            using (var context = new CryptoBasketContext(dbContextOptions))
+            {
+                var repository = new PurchaseRepository(context);
+                await repository.SaveAsync(purchase);
+            }
+
+            // assert
+            using (var context = new CryptoBasketContext(dbContextOptions))
+            {
+                var repository = new PurchaseRepository(context);
+
+                var purchaseFromDatabase = await repository.GetByIdAsync(purchase.Id);
+
+                Assert.NotNull(purchaseFromDatabase);
+                Assert.Equal(purchase.Id, purchaseFromDatabase.Id);
+                Assert.Equal(purchase.Quantity, purchaseFromDatabase.Quantity);
+                Assert.Equal(product, purchaseFromDatabase.Product);
+            }
+        }
+
+        [Fact]
+        public async Task Given_PurchaseId_When_ThePurchaseDoesNotExistsOnTheDataBase_Then_NothingReturns()
+        {
+            // arrange
+            var dbContextOptions = new DbContextOptionsBuilder<CryptoBasketContext>()
+                .UseInMemoryDatabase(databaseName: "GetNothingExistsTestDatabase")
+                .Options;
+
+            // act
+            var purchaseId = Guid.NewGuid();
+
+            // assert
+            using (var context = new CryptoBasketContext(dbContextOptions))
+            {
+                var repository = new PurchaseRepository(context);
+
+                var purchaseFromDatabase = await repository.GetByIdAsync(purchaseId);
+
+                Assert.Null(purchaseFromDatabase);
+            }
+        }
     }
 }

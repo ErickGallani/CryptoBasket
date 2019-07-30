@@ -1,11 +1,14 @@
 ﻿namespace CryptoBasket.Domain.Core.ValueObjects
 {
+    using FluentValidation;
     using System.Collections.Generic;
     using System.Linq;
 
     public abstract class ValueObject<T>
     {
         public abstract IEnumerable<object> GetValues();
+
+        public abstract IValidator<T> GetValidator();
 
         public override bool Equals(object other)
         {
