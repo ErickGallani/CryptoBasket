@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\2.Application\CryptoBasket.Application\CryptoBasket.Application.csproj" />
     <ProjectReference Include="..\..\4.Infrastructure\CryptoBasket.CoinMarketCap\CryptoBasket.CoinMarketCap.csproj" />
+    <ProjectReference Include="..\..\4.Infrastructure\CryptoBasket.ErrorLogger\CryptoBasket.ErrorLogger.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

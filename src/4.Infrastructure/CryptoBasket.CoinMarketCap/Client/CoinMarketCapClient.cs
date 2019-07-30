@@ -2,7 +2,9 @@
 {
     using CryptoBasket.Application.Dtos;
     using CryptoBasket.Application.Interfaces;
+    using CryptoBasket.Application.Returns;
     using CryptoBasket.CoinMarketCap.Consts;
+    using CryptoBasket.Domain.Core.Interfaces;
     using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
@@ -12,16 +14,20 @@
     public class CoinMarketCapClient : ICryptoMarket
     {
         private readonly IHttpClientFactory clientFactory;
+        private readonly IErrorLogger errorLogger;
 
-        public CoinMarketCapClient(IHttpClientFactory clientFactory)
+        public CoinMarketCapClient(
+            IHttpClientFactory clientFactory,
+            IErrorLogger errorLogger)
         {
             this.clientFactory = clientFactory;
+            this.errorLogger = errorLogger;
         }
 
-        public async Task<IEnumerable<ProductDto>> GetProductsAsync()
+        public async Task<Response> GetProductsAsync()
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                "v1/cryptocurrency/listings/latest?sort=price&limit=0");
+                "v1/cryptocurrency/listings/latest?sort=price");
 
             var products = new List<ProductDto>();
 
@@ -33,9 +39,7 @@
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var stringResult = await response.Content.ReadAsStringAsync();
-
-                    var productsJson = JObject.Parse(stringResult);
+                    var productsJson = await ParseToJsonObjectFromResultAsync(response);
 
                     foreach (var item in productsJson.Last.Values())
                     {
@@ -53,13 +57,47 @@
                         });
                     }
                 }
+                else
+                {
+                    var failedResponse = await ParseToJsonObjectFromResultAsync(response);
+
+                    var message = failedResponse.GetValue("status")["error_message"].ToString();
+
+                    var code = failedResponse.GetValue("status")["error_code"].ToString();
+
+                    await this.errorLogger.LogAsync(message);
+
+                    return Failed(message, code);
+                }
             }
             catch (Exception ex)
             {
-                var msg = ex.Message;
+                await this.errorLogger.LogAsync(ex.Message, ex);
+
+                return Failed(ex.Message, string.Empty);
             }
 
-            return products;
+            return Success(products);
+        }
+
+        private Response Failed(string message, string errorCode)
+        {
+            var error = new List<ErrorDto>()
+            {
+                new ErrorDto(message, errorCode)
+            };
+
+            return new ResponseFailed(error);
+        }
+
+        private Response Success(IEnumerable<ProductDto> products) =>
+            new ResponseSuccess<IEnumerable<ProductDto>>(products);
+
+        private async Task<JObject> ParseToJsonObjectFromResultAsync(HttpResponseMessage response)
+        {
+            var stringResult = await response.Content.ReadAsStringAsync();
+
+            return JObject.Parse(stringResult);
         }
     }
 }

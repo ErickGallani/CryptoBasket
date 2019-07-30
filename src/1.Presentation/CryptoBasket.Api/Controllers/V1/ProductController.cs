@@ -1,10 +1,9 @@
 ﻿namespace CryptoBasket.Api.Controllers.V1
 {
-    using CryptoBasket.Application.Dtos;
     using CryptoBasket.Application.Interfaces;
+    using CryptoBasket.Application.Returns;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     [Authorize]
@@ -16,19 +15,22 @@
     {
         private readonly IProductService productService;
 
-        public ProductController(IProductService productService)
-        {
+        public ProductController(IProductService productService) => 
             this.productService = productService;
-        }
 
         [HttpGet(Name = "GetProducts")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> Get()
+        public async Task<ActionResult<Response>> Get()
         {
-            var products = await this.productService.GetProductsAsync();
+            var response = await this.productService.GetProductsAsync();
 
-            return Ok(products);
+            if (response is ResponseFailed)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
     }
 }

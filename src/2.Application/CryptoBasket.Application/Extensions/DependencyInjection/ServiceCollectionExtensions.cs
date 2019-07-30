@@ -1,4 +1,4 @@
-﻿namespace CryptoBasket.CoinMarketCap.Extensions.DependencyInjection
+﻿namespace CryptoBasket.Application.Extensions.DependencyInjection
 {
     using CryptoBasket.Application.Interfaces;
     using CryptoBasket.Application.Services;

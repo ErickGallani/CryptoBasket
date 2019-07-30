@@ -13,6 +13,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\..\2.Application\CryptoBasket.Application\CryptoBasket.Application.csproj" />
+    <ProjectReference Include="..\CryptoBasket.ErrorLogger\CryptoBasket.ErrorLogger.csproj" />
   </ItemGroup>
 
 </Project>

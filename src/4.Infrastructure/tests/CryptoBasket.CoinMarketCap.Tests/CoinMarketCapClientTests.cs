@@ -1,8 +1,12 @@
 ﻿namespace CryptoBasket.CoinMarketCap.Tests
 {
+    using CryptoBasket.Application.Dtos;
+    using CryptoBasket.Application.Returns;
     using CryptoBasket.CoinMarketCap.Client;
+    using CryptoBasket.Domain.Core.Interfaces;
     using Moq;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -13,12 +17,21 @@
     public class CoinMarketCapClientTests
     {
         private readonly Mock<IHttpClientFactory> httpClientFactoryMock;
+        private readonly Mock<IErrorLogger> errorLoggerMock;
         private readonly CoinMarketCapClient coinMarketCapClient;
 
         public CoinMarketCapClientTests()
         {
             this.httpClientFactoryMock = new Mock<IHttpClientFactory>();
-            this.coinMarketCapClient = new CoinMarketCapClient(this.httpClientFactoryMock.Object);
+            this.errorLoggerMock = new Mock<IErrorLogger>();
+            this.coinMarketCapClient = 
+                new CoinMarketCapClient(
+                    this.httpClientFactoryMock.Object, 
+                    this.errorLoggerMock.Object);
+
+            this.errorLoggerMock.Setup(x => x.LogAsync(It.IsAny<string>())).Returns(Task.CompletedTask);
+
+            this.errorLoggerMock.Setup(x => x.LogAsync(It.IsAny<string>(), It.IsAny<Exception>())).Returns(Task.CompletedTask);
         }
 
         [Fact]
@@ -30,11 +43,15 @@
                 .Returns(new HttpClient(new SuccessHttpMessageHandlerMock()) { BaseAddress = new Uri("https://pro-api.coinmarketcap.com/") });
 
             // act
-            var products = await this.coinMarketCapClient.GetProductsAsync();
+            var response = await this.coinMarketCapClient.GetProductsAsync();
 
             // assert
-            Assert.NotNull(products);
-            Assert.True(products.Count() > 0);
+            Assert.NotNull(response);
+            Assert.True(response is ResponseSuccess<IEnumerable<ProductDto>>);
+
+            var responseSuccess = response as ResponseSuccess<IEnumerable<ProductDto>>;
+
+            Assert.True(responseSuccess.Result.Count() > 0);
         }
 
         [Fact]
@@ -46,11 +63,15 @@
                 .Returns(new HttpClient(new BadRequestHttpMessageHandlerMock()) { BaseAddress = new Uri("https://pro-api.coinmarketcap.com/") });
 
             // act
-            var products = await this.coinMarketCapClient.GetProductsAsync();
+            var response = await this.coinMarketCapClient.GetProductsAsync();
 
             // assert
-            Assert.NotNull(products);
-            Assert.True(products.Count() == 0);
+            Assert.NotNull(response);
+            Assert.True(response is ResponseFailed);
+
+            var responseFailed = response as ResponseFailed;
+
+            Assert.True(responseFailed.Errors.Count > 0);
         }
 
         [Fact]
@@ -62,11 +83,15 @@
                 .Returns(new HttpClient(new SuccessHttpMessageHandlerMock()) { BaseAddress = null });
 
             // act
-            var products = await this.coinMarketCapClient.GetProductsAsync();
+            var response = await this.coinMarketCapClient.GetProductsAsync();
 
             // assert
-            Assert.NotNull(products);
-            Assert.True(products.Count() == 0);
+            Assert.NotNull(response);
+            Assert.True(response is ResponseFailed);
+
+            var responseFailed = response as ResponseFailed;
+
+            Assert.True(responseFailed.Errors.Count > 0);
         }
 
         private class SuccessHttpMessageHandlerMock : HttpMessageHandler

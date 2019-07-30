@@ -1,5 +1,7 @@
 ﻿namespace CryptoBasket.Api.Controllers.V1
 {
+    using CryptoBasket.Application.Dtos;
+    using CryptoBasket.Application.Returns;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System;
@@ -15,16 +17,18 @@
         [HttpGet(Name = "GetPurchase")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public Task<ActionResult<object/*PurchaseDto*/>> Get(Guid id)
+        public async Task<ActionResult<Response>> Get(Guid id)
         {
-            return null;
+
+
+            return Ok();
         }
 
 
-        [HttpPost(Name = nameof(Post))]
+        [HttpPost(Name = "PostPurchase")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public Task<ActionResult<object/*ResponseDto*/>> Post(/*PurchaseDto*/)
+        public Task<ActionResult<Response>> Post(PurchaseDto purchase)
         {
             return null;
         }
