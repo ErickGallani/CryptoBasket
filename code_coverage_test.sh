@@ -1,11 +1,7 @@
 #!/bin/bash
-REGEX_PATTERN="<Linecoverage>(\d*)%<\/Linecoverage>"
+REGEX_PATTERN="<Linecoverage>(.*)%<\/Linecoverage>"
 
-ls
-
-ls ..
-
-TEST_RESULTS=$(cat reports/Summary.xml)
+TEST_RESULTS=$(echo reports/Summary.xml)
 
 cat $TEST_RESULTS
 
