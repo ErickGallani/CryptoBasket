@@ -22,8 +22,8 @@ script:
   - dotnet test -c Release src/4.Infrastructure/tests/CryptoBasket.CoinMarketCap.Tests/CryptoBasket.CoinMarketCap.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.coinmarketcap.core.tests.xml'
   - tools/reportgenerator "-reports:results/cryptobasket.api.tests.xml;results/cryptobasket.application.tests.xml;results/cryptobasket.domain.tests.xml;results/cryptobasket.domain.core.tests.xml" "-targetdir:reports/" "-reporttypes:HTML;XML;XMLSummary;TextSummary"
   - cat reports/Summary.txt
-  - chmod +x ci_scripts/code_coverage_test.sh
-  - ./ci_scripts/code_coverage_test.sh
+  - chmod +x code_coverage_test.sh
+  - ./code_coverage_test.sh
 
 after_success:
   - docker build -t erickgallani/cryptobasket .
