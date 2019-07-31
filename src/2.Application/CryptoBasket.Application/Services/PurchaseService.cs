@@ -23,7 +23,7 @@
             this.adapterFactory = adapterFactory;
         }
 
-        public async Task<Response> GetPurchase(Guid id)
+        public async Task<Response> GetPurchaseAsync(Guid id)
         {
             var purchase = await this.purchaseRepository.GetByIdAsync(id);
 
@@ -40,7 +40,7 @@
             return Success(purchaseDto);
         }
 
-        public async Task<Response> Purchase(PurchaseDto purchaseDto)
+        public async Task<Response> PurchaseAsync(PurchaseDto purchaseDto)
         {
             if (purchaseDto == null)
             {

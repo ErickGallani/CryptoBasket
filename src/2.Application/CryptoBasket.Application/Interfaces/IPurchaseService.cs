@@ -7,8 +7,8 @@
 
     public interface IPurchaseService
     {
-        Task<Response> Purchase(PurchaseDto purchase);
+        Task<Response> PurchaseAsync(PurchaseDto purchase);
 
-        Task<Response> GetPurchase(Guid id);
+        Task<Response> GetPurchaseAsync(Guid id);
     }
 }

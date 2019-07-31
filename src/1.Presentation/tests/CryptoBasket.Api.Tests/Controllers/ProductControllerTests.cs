@@ -15,10 +15,8 @@
     {
         private readonly Mock<IProductService> productServiceMock;
 
-        public ProductControllerTests()
-        {
+        public ProductControllerTests() => 
             this.productServiceMock = new Mock<IProductService>();
-        }
 
         [Fact]
         public async Task Given_ValidRequest_When_GetProductsAsyncInvoked_Then_200OKIsReturned()
@@ -38,7 +36,6 @@
             Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)HttpStatusCode.OK);
             Assert.True((actionResult.Result as OkObjectResult).Value is ResponseSuccess<IEnumerable<ProductDto>>);
         }
-
 
         [Fact]
         public async Task Given_InvalidRequest_When_GetProductsAsyncInvoked_Then_400BadRequestIsReturned()

@@ -3,7 +3,9 @@
     using CryptoBasket.Application.Dtos;
     using CryptoBasket.Application.Interfaces;
     using CryptoBasket.Application.Returns;
+    using CryptoBasket.Domain.Core.Interfaces;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using System;
     using System.Linq;
@@ -17,51 +19,77 @@
     public class PurchaseController : BaseController
     {
         private readonly IPurchaseService purchaseService;
+        private readonly IErrorLogger errorLogger;
 
-        public PurchaseController(IPurchaseService purchaseService) => 
+        public PurchaseController(
+            IPurchaseService purchaseService, 
+            IErrorLogger errorLogger)
+        {
             this.purchaseService = purchaseService;
+            this.errorLogger = errorLogger;
+        }
 
         [HttpGet(Name = "GetPurchase")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult<Response>> Get(Guid id)
         {
-            var purchase = await this.purchaseService.GetPurchase(id);
-
-            if (purchase is ResponseFailed)
+            try
             {
-                var failed = purchase as ResponseFailed;
+                var purchase = await this.purchaseService.GetPurchaseAsync(id);
 
-                if(failed.Errors.Any(x => x.Code == "5040"))
+                if (purchase is ResponseFailed)
                 {
-                    return NotFound(failed);
+                    var failed = purchase as ResponseFailed;
+
+                    if(failed.Errors.Any(x => x.Code == "5040"))
+                    {
+                        return NotFound(failed);
+                    }
+
+                    return BadRequest(failed);
                 }
 
-                return BadRequest(failed);
+                return Ok(purchase);
             }
+            catch (Exception ex)
+            {
+                await this.errorLogger.LogAsync(ex.Message, ex);
 
-            return Ok(purchase);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPost(Name = "PostPurchase")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<ActionResult<Response>> Post(PurchaseDto purchase)
         {
-            if(purchase == null)
+            try
             {
-                return BadRequestParameter(nameof(purchase));
+                if (purchase == null)
+                {
+                    return BadRequestParameter(nameof(purchase));
+                }
+
+                var response = await this.purchaseService.PurchaseAsync(purchase);
+
+                if (response is ResponseFailed)
+                {
+                    return BadRequest(response);
+                }
+
+                return Ok(response);
             }
-
-            var response = await this.purchaseService.Purchase(purchase);
-
-            if (response is ResponseFailed)
+            catch (Exception ex)
             {
-                return BadRequest(response);
-            }
+                await this.errorLogger.LogAsync(ex.Message, ex);
 
-            return Ok(response);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

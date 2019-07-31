@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\2.Application\CryptoBasket.Application\CryptoBasket.Application.csproj" />
+    <ProjectReference Include="..\..\4.Infrastructure\CryptoBasket.ErrorLogger\CryptoBasket.ErrorLogger.csproj" />
     <ProjectReference Include="..\..\5.DependencyInjection\CryptoBasket.IoC\CryptoBasket.IoC.csproj" />
   </ItemGroup>
 
