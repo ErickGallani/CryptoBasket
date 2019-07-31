@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     [Authorize]
@@ -13,7 +14,7 @@
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/purchases")]
-    public class PurchaseController : ControllerBase
+    public class PurchaseController : BaseController
     {
         private readonly IPurchaseService purchaseService;
 
@@ -26,16 +27,41 @@
         [ProducesResponseType(404)]
         public async Task<ActionResult<Response>> Get(Guid id)
         {
-            return Ok();
-        }
+            var purchase = await this.purchaseService.GetPurchase(id);
 
+            if (purchase is ResponseFailed)
+            {
+                var failed = purchase as ResponseFailed;
+
+                if(failed.Errors.Any(x => x.Code == "5040"))
+                {
+                    return NotFound(failed);
+                }
+
+                return BadRequest(failed);
+            }
+
+            return Ok(purchase);
+        }
 
         [HttpPost(Name = "PostPurchase")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public Task<ActionResult<Response>> Post(PurchaseDto purchase)
+        public async Task<ActionResult<Response>> Post(PurchaseDto purchase)
         {
-            return null;
+            if(purchase == null)
+            {
+                return BadRequestParameter(nameof(purchase));
+            }
+
+            var response = await this.purchaseService.Purchase(purchase);
+
+            if (response is ResponseFailed)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
     }
 }

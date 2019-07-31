@@ -11,7 +11,7 @@
     {
         private Purchase() { }
 
-        public Purchase(Product product, int quantity)
+        public Purchase(Product product, double quantity)
         {
             this.Id = Guid.NewGuid();
             this.Product = product;
@@ -20,7 +20,7 @@
 
         public Product Product { get; private set; }
 
-        public int Quantity { get; private set; }
+        public double Quantity { get; private set; }
 
         public override Task<ValidationResult> ValidateAsync() =>
             new PurchaseValidator().ValidateAsync(this);

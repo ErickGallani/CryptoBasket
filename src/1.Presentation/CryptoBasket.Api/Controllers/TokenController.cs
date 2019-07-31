@@ -5,6 +5,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.IdentityModel.Tokens;
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IdentityModel.Tokens.Jwt;
     using System.Text;
 
@@ -17,6 +18,7 @@
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/tokens")]
+    [ExcludeFromCodeCoverage]
     public class TokenController : ControllerBase
     {
         private readonly IConfiguration config;

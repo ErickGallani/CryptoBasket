@@ -11,7 +11,7 @@
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/products")]
-    public class ProductController : ControllerBase
+    public class ProductController : BaseController
     {
         private readonly IProductService productService;
 

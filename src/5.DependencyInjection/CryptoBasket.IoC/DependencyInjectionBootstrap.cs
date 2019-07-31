@@ -2,6 +2,7 @@
 {
     using CryptoBasket.Application.Extensions.DependencyInjection;
     using CryptoBasket.CoinMarketCap.Extensions.DependencyInjection;
+    using CryptoBasket.CrossCutting.Extensions.DependencyInjection;
     using CryptoBasket.ErrorLogger.Extensions.DependencyInjection;
     using CryptoBasket.Repository.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +18,8 @@
                 .AddServices()
                 .AddCryptoClients()
                 .AddErrorLogger()
-                .AddRepositories();
+                .AddRepositories()
+                .AddAdapterFactory();
 
             return services;
         }

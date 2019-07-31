@@ -26,7 +26,7 @@
             // arrange
             this.productServiceMock
                 .Setup(x => x.GetProductsAsync())
-                .ReturnsAsync(new ResponseSuccess<IEnumerable<ProductDto>>());
+                .ReturnsAsync(new ResponseSuccess<IEnumerable<ProductDto>>(new List<ProductDto>()));
 
             var productController = new ProductController(this.productServiceMock.Object);
 
