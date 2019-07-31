@@ -2,14 +2,10 @@
 {
     using CryptoBasket.Application.Dtos;
     using CryptoBasket.Application.Returns;
-    using System;
     using System.Linq;
 
     public abstract class BaseService
     {
-        public Response Success() =>
-            new ResponseSuccess();
-
         public Response Success<TResultValue>(TResultValue result) => 
             new ResponseSuccess<TResultValue>(result);
 
