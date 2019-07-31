@@ -21,7 +21,8 @@ script:
   - dotnet test src/3.Domain/tests/CryptoBasket.Domain.Core.Tests/CryptoBasket.Domain.Core.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.domain.core.tests.xml'
   - dotnet test src/4.Infrastructure/tests/CryptoBasket.CoinMarketCap.Tests/CryptoBasket.CoinMarketCap.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.coinmarketcap.tests.xml'
   - dotnet test src/4.Infrastructure/tests/CryptoBasket.Repository.Tests/CryptoBasket.Repository.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.repository.tests.xml'
-  - tools/reportgenerator "-reports:results/cryptobasket.api.tests.xml;results/cryptobasket.application.tests.xml;results/cryptobasket.domain.tests.xml;results/cryptobasket.domain.core.tests.xml;results/cryptobasket.coinmarketcap.tests.xml;results/cryptobasket.repository.tests.xml" "-targetdir:reports/" "-reporttypes:HTML;XML;XMLSummary;TextSummary"
+  - dotnet test src/4.Infrastructure/tests/CryptoBasket.CrossCutting.Tests/CryptoBasket.CrossCutting.Tests.csproj /property:CollectCoverage=true /property:CoverletOutputFormat=opencover /property:CoverletOutput='../../../../results/cryptobasket.crosscutting.tests.xml'
+  - tools/reportgenerator "-reports:results/cryptobasket.api.tests.xml;results/cryptobasket.application.tests.xml;results/cryptobasket.domain.tests.xml;results/cryptobasket.domain.core.tests.xml;results/cryptobasket.coinmarketcap.tests.xml;results/cryptobasket.repository.tests.xml;results/cryptobasket.crosscutting.tests.xml" "-targetdir:reports/" "-reporttypes:HTML;XML;XMLSummary;TextSummary"
   - cat reports/Summary.txt
   - chmod +x code_coverage_test.sh
   - ./code_coverage_test.sh

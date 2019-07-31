@@ -5,7 +5,9 @@
     using CryptoBasket.Repository.Repositories;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
+    using System.Diagnostics.CodeAnalysis;
 
+    [ExcludeFromCodeCoverage]
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services)

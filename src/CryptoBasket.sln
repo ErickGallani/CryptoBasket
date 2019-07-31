@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoBasket.Repository.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoBasket.CrossCutting", "4.Infrastructure\CryptoBasket.CrossCutting\CryptoBasket.CrossCutting\CryptoBasket.CrossCutting.csproj", "{4B296B4A-CE90-4C7D-A553-9F404C658D77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoBasket.CrossCutting.Tests", "4.Infrastructure\tests\CryptoBasket.CrossCutting.Tests\CryptoBasket.CrossCutting.Tests.csproj", "{D529B98B-342F-46AF-8831-C361C58B98C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -241,6 +243,18 @@ Global
 		{4B296B4A-CE90-4C7D-A553-9F404C658D77}.Release|x64.Build.0 = Release|Any CPU
 		{4B296B4A-CE90-4C7D-A553-9F404C658D77}.Release|x86.ActiveCfg = Release|Any CPU
 		{4B296B4A-CE90-4C7D-A553-9F404C658D77}.Release|x86.Build.0 = Release|Any CPU
+		{D529B98B-342F-46AF-8831-C361C58B98C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D529B98B-342F-46AF-8831-C361C58B98C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D529B98B-342F-46AF-8831-C361C58B98C5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D529B98B-342F-46AF-8831-C361C58B98C5}.Debug|x64.Build.0 = Debug|Any CPU
+		{D529B98B-342F-46AF-8831-C361C58B98C5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D529B98B-342F-46AF-8831-C361C58B98C5}.Debug|x86.Build.0 = Debug|Any CPU
+		{D529B98B-342F-46AF-8831-C361C58B98C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D529B98B-342F-46AF-8831-C361C58B98C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D529B98B-342F-46AF-8831-C361C58B98C5}.Release|x64.ActiveCfg = Release|Any CPU
+		{D529B98B-342F-46AF-8831-C361C58B98C5}.Release|x64.Build.0 = Release|Any CPU
+		{D529B98B-342F-46AF-8831-C361C58B98C5}.Release|x86.ActiveCfg = Release|Any CPU
+		{D529B98B-342F-46AF-8831-C361C58B98C5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -265,6 +279,7 @@ Global
 		{5B219C60-7DFA-46F4-8CE2-8A0B05870D64} = {5E094E70-2D7D-4B8D-972A-FCE62AF8A731}
 		{7457CF7F-27D1-4DB6-9FD4-51E1E006813B} = {4F00B856-9DE6-41CE-A3CE-CCFDE2F93908}
 		{4B296B4A-CE90-4C7D-A553-9F404C658D77} = {5E094E70-2D7D-4B8D-972A-FCE62AF8A731}
+		{D529B98B-342F-46AF-8831-C361C58B98C5} = {4F00B856-9DE6-41CE-A3CE-CCFDE2F93908}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {245C8865-52BE-4F66-8265-7A2DBA4C78DC}

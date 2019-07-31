@@ -1,6 +1,7 @@
 ﻿namespace CryptoBasket.ErrorLogger.Loggers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using CryptoBasket.Domain.Core.Interfaces;
     using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@
     /// is not attached to the application. This is way is easy to change from a simple file logger
     /// to a NoSQL database for example, an elasticsearch database or anything without impact the application
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class ErrorLogger : IErrorLogger
     {
         private readonly ILogger logger;
