@@ -1,6 +1,7 @@
 ﻿namespace CryptoBasket.Api.Controllers.V1
 {
     using CryptoBasket.Application.Dtos;
+    using CryptoBasket.Application.ErrorCodes;
     using CryptoBasket.Application.Interfaces;
     using CryptoBasket.Application.Returns;
     using CryptoBasket.Domain.Core.Interfaces;
@@ -44,7 +45,7 @@
                 {
                     var failed = purchase as ResponseFailed;
 
-                    if(failed.Errors.Any(x => x.Code == "5040"))
+                    if(failed.Errors.Any(x => x.Code == PurchaseErroCode.PurchaseNotFound))
                     {
                         return NotFound(failed);
                     }

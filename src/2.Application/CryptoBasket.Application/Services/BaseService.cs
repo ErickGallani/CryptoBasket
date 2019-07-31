@@ -2,6 +2,7 @@
 {
     using CryptoBasket.Application.Dtos;
     using CryptoBasket.Application.Returns;
+    using System;
     using System.Linq;
 
     public abstract class BaseService

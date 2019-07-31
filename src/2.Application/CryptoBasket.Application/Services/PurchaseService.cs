@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using CryptoBasket.Application.Adapters;
     using CryptoBasket.Application.Dtos;
+    using CryptoBasket.Application.ErrorCodes;
     using CryptoBasket.Application.Interfaces;
     using CryptoBasket.Application.Returns;
     using CryptoBasket.CrossCutting.Adapters;
@@ -29,7 +30,7 @@
 
             if (purchase == null)
             {
-                return Failed("Purchase not found", "5040");
+                return Failed("Purchase not found", PurchaseErroCode.PurchaseNotFound);
             }
 
             var purchaseDto = 
@@ -44,7 +45,7 @@
         {
             if (purchaseDto == null)
             {
-                Failed("Parameter purchaseDto can't be null", "5041");
+                return Failed("Parameter purchaseDto can't be null", PurchaseErroCode.ParameterPurchaseDtoMandatory);
             }
 
             var purchase =
@@ -58,7 +59,7 @@
             {
                 await this.purchaseRepository.SaveAsync(purchase);
 
-                return Success();
+                return Success(purchase.Id);
             }
 
             var errors = 

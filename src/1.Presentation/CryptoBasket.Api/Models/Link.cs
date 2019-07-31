@@ -1,8 +1,8 @@
-﻿namespace CryptoBasket.Application.Dtos
+﻿namespace CryptoBasket.Api.Models
 {
-    public class LinkDto
+    public class Link
     {
-        public LinkDto(string href, string rel, string type)
+        public Link(string href, string rel, string type)
         {
             this.Href = href;
             this.Rel = rel;

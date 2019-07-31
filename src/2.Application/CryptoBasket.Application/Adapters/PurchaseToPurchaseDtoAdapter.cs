@@ -12,13 +12,14 @@
 
             if (source != null)
             {
-                new PurchaseDto(
-                    new ProductDto(
-                        source.Product.Id,
-                        source.Product.Name,
-                        source.Product.Symbol,
-                        source.Product.Price),
-                    source.Quantity);
+                purchaseDto = 
+                    new PurchaseDto(
+                        new ProductDto(
+                            source.Product.Id,
+                            source.Product.Name,
+                            source.Product.Symbol,
+                            source.Product.Price),
+                        source.Quantity);
             }
 
             return purchaseDto;
