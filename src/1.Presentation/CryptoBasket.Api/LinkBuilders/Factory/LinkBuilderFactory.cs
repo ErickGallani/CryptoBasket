@@ -16,11 +16,11 @@
             switch(type.Name)
             {
                 case nameof(PurchasePostLinksBuilder):
-                    return new PurchasePostLinksBuilder(this.urlHelper, new Guid(source.ToString()));
+                    return new PurchasePostLinksBuilder(this.urlHelper, new Guid(source?.ToString()));
                 case nameof(ProductGetLinksBuilder):
                     return new ProductGetLinksBuilder(this.urlHelper);
                 case nameof(PurchaseGetLinksBuilder):
-                    return new PurchaseGetLinksBuilder(this.urlHelper, new Guid(source.ToString()));
+                    return new PurchaseGetLinksBuilder(this.urlHelper, new Guid(source?.ToString()));
                 default:
                     return null;
             }

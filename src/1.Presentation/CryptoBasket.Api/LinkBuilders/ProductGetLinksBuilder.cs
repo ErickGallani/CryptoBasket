@@ -10,21 +10,15 @@
     {
         private readonly IUrlHelper urlHelper;
 
-        public ProductGetLinksBuilder(IUrlHelper urlHelper)
-        {
+        public ProductGetLinksBuilder(IUrlHelper urlHelper) => 
             this.urlHelper = urlHelper;
-        }
 
-        public IEnumerable<Link> BuildLinks()
-        {
-            var links = new List<Link>
+        public IEnumerable<Link> BuildLinks() =>
+            new List<Link>
             {
                 new Link(this.urlHelper.Link(nameof(PurchaseController.PostPurchase), null),
                 "purchases",
                 "POST")
             };
-
-            return links;
-        }
     }
 }
