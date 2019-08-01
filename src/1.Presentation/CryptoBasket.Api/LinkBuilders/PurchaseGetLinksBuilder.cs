@@ -27,7 +27,7 @@
             {
                 new Link(this.urlHelper.Link(nameof(PurchaseController.GetPurchase), idObj),
                 "purchases",
-                "PUT - this url desn't exists, is just an example")
+                "PUT - this url doesn't exists, is just an example")
             };
 
             return links;
