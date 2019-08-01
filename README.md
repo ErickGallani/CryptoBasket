@@ -3,12 +3,15 @@ E-Commerce crypto basket api
 
 ## Build status [![Build Status](https://travis-ci.org/ErickGallani/CryptoBasket.svg?branch=master)](https://travis-ci.org/ErickGallani/CryptoBasket)
 
+#### Test coverage status
+![Test coverage](/assets/coverage.PNG) 
+
 ## Architectural choice
 - The architeture used for this project was the ONION architecture
 
 ![Onion Example 1](/assets/onion_example_1.png)  
 
-![Onion Example 1](/assets/Architectural_Overview.png)  
+![Architectural overview](/assets/Architectural_Overview.png)  
 
 ## Patterns used
 - S.O.L.I.D
