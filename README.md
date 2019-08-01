@@ -7,7 +7,9 @@ E-Commerce crypto basket api
 - The architeture used for this project was the ONION architecture
 
 ![Onion Example 1](/assets/onion_example_1.png)  
- 
+
+![Onion Example 1](/assets/Architectural_Overview.png)  
+
 ## Patterns used
 - S.O.L.I.D
 - DRY
