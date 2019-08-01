@@ -1,5 +1,8 @@
 ﻿namespace CryptoBasket.Api.Controllers.V1
 {
+    using CryptoBasket.Api.Decorators;
+    using CryptoBasket.Api.LinkBuilders;
+    using CryptoBasket.Api.LinkBuilders.Factory;
     using CryptoBasket.Application.Interfaces;
     using CryptoBasket.Application.Returns;
     using CryptoBasket.Domain.Core.Interfaces;
@@ -18,13 +21,16 @@
     {
         private readonly IProductService productService;
         private readonly IErrorLogger errorLogger;
+        private readonly ILinkBuilderFactory linkBuilderFactory;
 
         public ProductController(
             IProductService productService, 
-            IErrorLogger errorLogger)
+            IErrorLogger errorLogger,
+            ILinkBuilderFactory linkBuilderFactory)
         {
             this.productService = productService;
             this.errorLogger = errorLogger;
+            this.linkBuilderFactory = linkBuilderFactory;
         }
 
         [HttpGet(Name = "GetProducts")]
@@ -42,7 +48,12 @@
                     return BadRequest(response);
                 }
 
-                return Ok(response);
+                var decorator =
+                    new SuccessResponseLinksDecorator(
+                        response,
+                        this.linkBuilderFactory.Create(typeof(ProductGetLinksBuilder)));
+
+                return Ok(decorator);
             }
             catch (Exception ex)
             {

@@ -1,5 +1,8 @@
 ﻿namespace CryptoBasket.Api.Controllers.V1
 {
+    using CryptoBasket.Api.Decorators;
+    using CryptoBasket.Api.LinkBuilders;
+    using CryptoBasket.Api.LinkBuilders.Factory;
     using CryptoBasket.Application.Dtos;
     using CryptoBasket.Application.ErrorCodes;
     using CryptoBasket.Application.Interfaces;
@@ -21,21 +24,24 @@
     {
         private readonly IPurchaseService purchaseService;
         private readonly IErrorLogger errorLogger;
+        private readonly ILinkBuilderFactory linkBuilderFactory;
 
         public PurchaseController(
             IPurchaseService purchaseService, 
-            IErrorLogger errorLogger)
+            IErrorLogger errorLogger,
+            ILinkBuilderFactory linkBuilderFactory)
         {
             this.purchaseService = purchaseService;
             this.errorLogger = errorLogger;
+            this.linkBuilderFactory = linkBuilderFactory;
         }
 
-        [HttpGet(Name = "GetPurchase")]
+        [HttpGet(Name = nameof(GetPurchase))]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<Response>> Get(Guid id)
+        public async Task<ActionResult<Response>> GetPurchase(Guid id)
         {
             try
             {
@@ -53,7 +59,13 @@
                     return BadRequest(failed);
                 }
 
-                return Ok(purchase);
+                var decorator =
+                    new SuccessResponseLinksDecorator(
+                        purchase,
+                        this.linkBuilderFactory.Create(
+                            typeof(PurchaseGetLinksBuilder), id.ToString()));
+
+                return Ok(decorator);
             }
             catch (Exception ex)
             {
@@ -63,11 +75,11 @@
             }
         }
 
-        [HttpPost(Name = "PostPurchase")]
+        [HttpPost(Name = nameof(PostPurchase))]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<Response>> Post(PurchaseDto purchase)
+        public async Task<ActionResult<Response>> PostPurchase(PurchaseDto purchase)
         {
             try
             {
@@ -83,7 +95,14 @@
                     return BadRequest(response);
                 }
 
-                return Ok(response);
+                var decorator = 
+                    new SuccessResponseLinksDecorator(
+                        response,
+                        this.linkBuilderFactory.Create(
+                            typeof(PurchasePostLinksBuilder), 
+                            (response as ResponseSuccess<Guid>).Result.ToString()));
+
+                return Ok(decorator);
             }
             catch (Exception ex)
             {

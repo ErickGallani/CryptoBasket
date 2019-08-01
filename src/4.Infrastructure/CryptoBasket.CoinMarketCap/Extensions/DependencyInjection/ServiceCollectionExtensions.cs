@@ -4,6 +4,7 @@
     using CryptoBasket.CoinMarketCap.Client;
     using CryptoBasket.CoinMarketCap.Consts;
     using Microsoft.Extensions.DependencyInjection;
+    using Polly;
     using System;
     using System.Diagnostics.CodeAnalysis;
 
@@ -23,7 +24,13 @@
                 
                 c.DefaultRequestHeaders.Add("X-CMC_PRO_API_KEY", "19b94fb2-7592-4cf7-8f27-de2f9fac435f");
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
-            });
+            })
+            .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(new[]
+            {
+                TimeSpan.FromSeconds(1),
+                TimeSpan.FromSeconds(5),
+                TimeSpan.FromSeconds(10)
+            }));
 
             return services;
         }

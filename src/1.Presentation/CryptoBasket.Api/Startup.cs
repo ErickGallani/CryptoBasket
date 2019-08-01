@@ -1,5 +1,6 @@
 ﻿namespace CryptoBasket.Api
 {
+    using CryptoBasket.Api.Extensions.DependencyInjection;
     using CryptoBasket.IoC;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
@@ -88,7 +89,9 @@
                     };
                 });
 
-            DependencyInjectionBootstrap.Setup(services);
+            DependencyInjectionBootstrap
+                .Setup(services)
+                .AddApiDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
