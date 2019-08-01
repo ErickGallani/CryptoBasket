@@ -1,0 +1,7 @@
+version: '3.3'
+services:
+  api:
+    image: erickgallani/cryptobasket
+    restart: always
+    ports: 
+      - 8095:80

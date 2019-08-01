@@ -63,3 +63,7 @@ services.AddHttpClient(HttpConsts.HTTP_NAME, c =>
 
 ## To build your own image
 - docker build -t myimagename .
+
+## To run the container (example)
+- docker run -d -p 8097:80 myimagename
+- access on browser http://localhost:8097/swagger/index.html
